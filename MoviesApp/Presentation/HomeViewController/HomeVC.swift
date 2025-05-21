@@ -44,22 +44,32 @@ class HomeVC: BaseVC<HomeView> {
 
 extension HomeVC: UISearchBarDelegate {
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchText = searchText
+    }
 
 }
 
 extension HomeVC: UITableViewDataSource {
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.moviesByYear.count
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.movies.count
+        return viewModel.moviesByYear[section].movies.count
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.moviesByYear[section].year
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: MoviesTableViewCell = tableView.forceDequeueCell(identifier: MoviesTableViewCell.identifier)
-        cell.configureCell(movie: viewModel.movies[indexPath.row])
+        let movie = viewModel.moviesByYear[indexPath.section].movies[indexPath.row]
+        cell.configureCell(movie: movie)
         return cell
     }
-
 }
 
 extension HomeVC: UITableViewDelegate {
