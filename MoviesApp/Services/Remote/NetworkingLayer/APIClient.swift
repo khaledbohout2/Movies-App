@@ -8,36 +8,41 @@ protocol APIClientProtocol {
 
 final class APIClient: APIClientProtocol {
     
-    private var apiKey: String? {
-        Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
+    private var bearerToken: String? {
+        Bundle.main.object(forInfoDictionaryKey: "API_Read_Access_Token") as? String
     }
     
     func request<T: Decodable>(_ endpoint: APIEndpoint, responseType: T.Type) -> AnyPublisher<T, Error> {
-        // Build URL with API key in query or headers as required
+        // Construct full URL
         var urlComponents = URLComponents(url: endpoint.baseURL.appendingPathComponent(endpoint.path), resolvingAgainstBaseURL: false)!
-        
-        var queryItems = endpoint.queryParameters ?? []
-        
-        // Add API Key to query params if required by your API
-        if let apiKey = apiKey {
-            queryItems.append(URLQueryItem(name: "api_key", value: apiKey))
-        }
-        urlComponents.queryItems = queryItems
+        urlComponents.queryItems = endpoint.queryParameters
         
         guard let url = urlComponents.url else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
         
+        // Create URLRequest and add Bearer token header
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
-        request.allHTTPHeaderFields = endpoint.headers
-        request.httpBody = endpoint.body
-        
+        request.allHTTPHeaderFields = endpoint.headers ?? [:]
+
+        if let token = bearerToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+            return Fail(error: URLError(.userAuthenticationRequired)).eraseToAnyPublisher()
+        }
+
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { data, response -> Data in
-                guard let httpResp = response as? HTTPURLResponse,
-                      200..<300 ~= httpResp.statusCode else {
+                guard let httpResp = response as? HTTPURLResponse else {
                     throw URLError(.badServerResponse)
+                }
+                if !(200..<300).contains(httpResp.statusCode) {
+                    if let apiError = try? JSONDecoder().decode(TMDbError.self, from: data) {
+                        throw apiError
+                    } else {
+                        throw URLError(.badServerResponse)
+                    }
                 }
                 return data
             }
@@ -46,4 +51,12 @@ final class APIClient: APIClientProtocol {
     }
 }
 
-
+struct TMDbError: Decodable, Error {
+    let status_code: Int
+    let status_message: String
+    let success: Bool?
+    
+    var localizedDescription: String {
+        return status_message
+    }
+}

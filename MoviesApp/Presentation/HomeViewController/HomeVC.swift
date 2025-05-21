@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 class HomeVC: BaseVC<HomeView> {
 
     private let viewModel: HomeViewModel
+    private var cancellables = Set<AnyCancellable>()
 
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -22,10 +24,47 @@ class HomeVC: BaseVC<HomeView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindViewModel()
+        viewModel.didLoad()
         self.title = "Home"
+        mainView.tableView.register(MoviesTableViewCell.self, forCellReuseIdentifier: MoviesTableViewCell.identifier)
+        mainView.setDelegates(self)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+
+    private func bindViewModel() {
+        viewModel.$movies
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.mainView.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
+
+}
+
+extension HomeVC: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+
+}
+
+extension HomeVC: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.movies.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: MoviesTableViewCell = tableView.forceDequeueCell(identifier: MoviesTableViewCell.identifier)
+        cell.configureCell(movie: viewModel.movies[indexPath.row])
+        return cell
+    }
+
+}
+
+extension HomeVC: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
 }

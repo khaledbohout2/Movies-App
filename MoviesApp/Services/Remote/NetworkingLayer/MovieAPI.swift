@@ -49,5 +49,3 @@ enum MovieAPI: APIEndpoint {
 
     var body: Data? { nil }
 }
-
-

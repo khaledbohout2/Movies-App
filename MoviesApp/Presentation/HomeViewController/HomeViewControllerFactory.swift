@@ -21,7 +21,7 @@ class DefaultHomeViewControllerFactory: HomeViewControllerFactory {
     func makeHomeViewController(coordinator: Coordinator) -> UIViewController {
         let viewModel = HomeViewModel(
             coordinator: coordinator,
-            getpopularMoviesUseCase: container.getPopularMoviesUseCase,
+            getPopularMoviesUseCase: container.getPopularMoviesUseCase,
             getsearchMoviesUseCase: container.searchMoviesUseCase
         )
         return HomeVC(viewModel: viewModel)
