@@ -8,9 +8,9 @@
 import Foundation
 
 enum MovieAPI: APIEndpoint {
-    case popular
-    case search(query: String)
-    
+    case popular(page: Int)
+    case search(query: String, page: Int)
+
     var baseURL: URL {
         URL(string: "https://api.themoviedb.org/3")!
     }
@@ -34,14 +34,14 @@ enum MovieAPI: APIEndpoint {
 
     var queryParameters: [URLQueryItem]? {
         switch self {
-        case .popular:
+        case .popular(let page):
             return [URLQueryItem(name: "language", value: "en-US"),
-                    URLQueryItem(name: "page", value: "1")]
-        case .search(let query):
+                    URLQueryItem(name: "page", value: "\(page)")]
+        case .search(let query, let page):
             return [
                 URLQueryItem(name: "query", value: query),
                 URLQueryItem(name: "language", value: "en-US"),
-                URLQueryItem(name: "page", value: "1"),
+                URLQueryItem(name: "page", value: "\(page)"),
                 URLQueryItem(name: "include_adult", value: "false")
             ]
         }

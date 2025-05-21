@@ -9,6 +9,15 @@ import Foundation
 
 struct MovieResponse: Decodable {
     let results: [Movie]
+    let page: Int
+    let totalPages: Int
+
+    enum CodingKeys: String, CodingKey {
+        case results
+        case page
+        case totalPages = "total_pages"
+    }
+
 }
 
 struct Movie: Decodable, Hashable {
@@ -17,9 +26,6 @@ struct Movie: Decodable, Hashable {
     let overview: String
     let posterPath: String?
     let releaseDate: String?
-
-    // Local-only property (not part of API response)
-    var isInWatchlist: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case id

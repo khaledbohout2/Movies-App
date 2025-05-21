@@ -14,15 +14,15 @@ class MockMoviesRepository: MoviesRepository {
         self.apiClient = apiClient
     }
 
-    func getPopularMovies() -> AnyPublisher<[Movie], Error> {
-        return apiClient.request(MovieAPI.popular, responseType: MovieResponse.self)
-            .map { $0.results }
+    func getPopularMovies(page: Int) -> AnyPublisher<MovieResponse, Error> {
+        return apiClient.request(MovieAPI.popular(page: page), responseType: MovieResponse.self)
+            .map { $0 }
             .eraseToAnyPublisher()
     }
 
-    func searchMovies(query: String) -> AnyPublisher<[Movie], Error> {
-        return apiClient.request(MovieAPI.search(query: query), responseType: MovieResponse.self)
-            .map { $0.results }
+    func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, Error> {
+        return apiClient.request(MovieAPI.search(query: query, page: page), responseType: MovieResponse.self)
+            .map { $0 }
             .eraseToAnyPublisher()
     }
 

@@ -50,10 +50,10 @@ class MoviesTableViewCell: UITableViewCell {
     }
 
     func setupLayout() {
-        addSubview(movieImageView)
-        addSubview(titleLabel)
-        addSubview(overviewLabel)
-        addSubview(watchlistImageView)
+        contentView.addSubview(movieImageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(overviewLabel)
+        contentView.addSubview(watchlistImageView)
 
         movieImageView.anchor(.leading(leadingAnchor, constant: 8),
                               .top(topAnchor, constant: 8),
@@ -80,7 +80,7 @@ class MoviesTableViewCell: UITableViewCell {
         movieImageView.load(from: movie.posterPath ?? "")
         titleLabel.text = movie.title
         overviewLabel.text = movie.overview
-        watchlistImageView.image = movie.isInWatchlist ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark")
+   //     watchlistImageView.image = movie.isInWatchlist ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark")
     }
 
 }

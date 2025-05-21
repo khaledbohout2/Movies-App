@@ -8,7 +8,7 @@
 import Combine
 
 protocol SearchMoviesUseCase {
-    func perform(query: String) -> AnyPublisher<[Movie], Error>
+    func perform(query: String, page: Int) -> AnyPublisher<MovieResponse, Error>
 }
 
 final class SearchMoviesUseCaseImp: SearchMoviesUseCase {
@@ -19,7 +19,7 @@ final class SearchMoviesUseCaseImp: SearchMoviesUseCase {
         self.moviesRepository = moviesRepository
     }
 
-    func perform(query: String) -> AnyPublisher<[Movie], Error> {
-        return moviesRepository.searchMovies(query: query)
+    func perform(query: String, page: Int) -> AnyPublisher<MovieResponse, Error> {
+        return moviesRepository.searchMovies(query: query, page: page)
     }
 }

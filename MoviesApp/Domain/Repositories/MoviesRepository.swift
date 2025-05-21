@@ -8,6 +8,6 @@
 import Combine
 
 protocol MoviesRepository {
-    func getPopularMovies() -> AnyPublisher<[Movie], Error>
-    func searchMovies(query: String) -> AnyPublisher<[Movie], Error>
+    func getPopularMovies(page: Int) -> AnyPublisher<MovieResponse, Error>
+    func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, Error>
 }
