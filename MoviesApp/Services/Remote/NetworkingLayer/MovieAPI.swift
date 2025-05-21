@@ -10,6 +10,9 @@ import Foundation
 enum MovieAPI: APIEndpoint {
     case popular(page: Int)
     case search(query: String, page: Int)
+    case getMovieDetails(id: Int)
+    case getSimilarMovies(id: Int)
+    case getMovieCredits(id: Int)
 
     var baseURL: URL {
         URL(string: "https://api.themoviedb.org/3")!
@@ -21,6 +24,12 @@ enum MovieAPI: APIEndpoint {
             return "/movie/popular"
         case .search:
             return "/search/movie"
+        case .getMovieDetails:
+            return "/movies/get-movie-details"
+        case .getSimilarMovies:
+            return "/movies/get-similar-movies"
+        case .getMovieCredits:
+            return "/movies/get-movie-credits"
         }
     }
 
@@ -34,6 +43,8 @@ enum MovieAPI: APIEndpoint {
 
     var queryParameters: [URLQueryItem]? {
         switch self {
+        case .getMovieDetails(let id):
+            return [URLQueryItem(name: "movie_id", value: "\(id)")]
         case .popular(let page):
             return [URLQueryItem(name: "language", value: "en-US"),
                     URLQueryItem(name: "page", value: "\(page)")]
@@ -44,6 +55,10 @@ enum MovieAPI: APIEndpoint {
                 URLQueryItem(name: "page", value: "\(page)"),
                 URLQueryItem(name: "include_adult", value: "false")
             ]
+        case .getSimilarMovies(let id):
+            return [URLQueryItem(name: "movie_id", value: "\(id)")]
+        case .getMovieCredits(let id):
+            return [URLQueryItem(name: "movie_id", value: "\(id)")]
         }
     }
 

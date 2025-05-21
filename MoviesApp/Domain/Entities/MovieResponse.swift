@@ -20,19 +20,25 @@ struct MovieResponse: Decodable {
 
 }
 
-struct Movie: Decodable, Hashable {
+struct Movie: Decodable {
     let id: Int
     let title: String
     let overview: String
     let posterPath: String?
+    let tagline: String?
+    let revenue: Int?
     let releaseDate: String?
+    let status: String?
 
     enum CodingKeys: String, CodingKey {
         case id
         case title
         case overview
         case posterPath = "poster_path"
+        case tagline
+        case revenue
         case releaseDate = "release_date"
+        case status
     }
 
     var releaseYear: String? {

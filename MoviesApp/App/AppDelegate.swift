@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let container = DependencyContainer()
         let homeFactory = DefaultHomeViewControllerFactory(container: container)
-        let coordinator = AppCoordinator(navigationController: navController, homeFactory: homeFactory)
+        let movieDetailsFactory = DefaultMovieDetailsFactory(container: container)
+        let coordinator = AppCoordinator(navigationController: navController, homeFactory: homeFactory, movieDetailsFactory: movieDetailsFactory)
 
         window.rootViewController = navController
         window.makeKeyAndVisible()

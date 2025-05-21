@@ -22,4 +22,5 @@ final class SearchMoviesUseCaseImp: SearchMoviesUseCase {
     func perform(query: String, page: Int) -> AnyPublisher<MovieResponse, Error> {
         return moviesRepository.searchMovies(query: query, page: page)
     }
+
 }

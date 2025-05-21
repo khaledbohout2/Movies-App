@@ -110,5 +110,9 @@ final class HomeViewModel {
         }
     }
 
+    func didSelectMovie(at indexPath: IndexPath) {
+        let movie = moviesByYear[indexPath.section].movies[indexPath.row]
+        coordinator.showMovieDetails(movieId: movie.id)
+    }
 
 }
