@@ -7,11 +7,6 @@
 
 import Combine
 
-struct Cast {
-    let actors: [CastMember]
-    let directors: [CrewMember]
-}
-
 protocol GetCastsOfSimilarMoviesUseCase {
     func execute(movieIds: [Int]) -> AnyPublisher<Cast, Error>
 }

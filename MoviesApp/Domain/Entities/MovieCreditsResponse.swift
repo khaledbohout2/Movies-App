@@ -18,7 +18,7 @@ struct CastMember: Codable, Identifiable {
     let name: String
     let popularity: Double
     let knownForDepartment: String
-    
+
     enum CodingKeys: String, CodingKey {
         case id, name, popularity
         case knownForDepartment = "known_for_department"
@@ -31,9 +31,14 @@ struct CrewMember: Codable, Identifiable {
     let popularity: Double
     let knownForDepartment: String
     let job: String
-    
+
     enum CodingKeys: String, CodingKey {
         case id, name, popularity, job
         case knownForDepartment = "known_for_department"
     }
+}
+
+struct Cast {
+    let actors: [CastMember]
+    let directors: [CrewMember]
 }
