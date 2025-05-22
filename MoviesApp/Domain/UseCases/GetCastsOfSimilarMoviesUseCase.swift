@@ -27,21 +27,36 @@ class GetCastsOfSimilarMoviesUseCaseImp: GetCastsOfSimilarMoviesUseCase {
                 let allCastMembers = responses.flatMap { $0.cast }
                 let allCrewMembers = responses.flatMap { $0.crew }
 
-                let actors = allCastMembers
-                    .filter { $0.knownForDepartment.lowercased() == "acting" }
+                var uniqueActorsDict = [Int: CastMember]()
+                allCastMembers
+                    .filter { $0.knownForDepartment == .acting }
+                    .forEach { actor in
+                        if uniqueActorsDict[actor.id] == nil {
+                            uniqueActorsDict[actor.id] = actor
+                        }
+                    }
+                let uniqueActors = Array(uniqueActorsDict.values)
                     .sorted { $0.popularity > $1.popularity }
                     .prefix(5)
 
-                let directors = allCrewMembers
-                    .filter { $0.knownForDepartment.lowercased() == "directing" && $0.job.lowercased() == "director" }
+                var uniqueDirectorsDict = [Int: CrewMember]()
+                allCrewMembers
+                    .filter { $0.knownForDepartment == .directing }
+                    .forEach { director in
+                        if uniqueDirectorsDict[director.id] == nil {
+                            uniqueDirectorsDict[director.id] = director
+                        }
+                    }
+                let uniqueDirectors = Array(uniqueDirectorsDict.values)
                     .sorted { $0.popularity > $1.popularity }
                     .prefix(5)
 
                 return Cast(
-                    actors: Array(actors),
-                    directors: Array(directors)
+                    actors: Array(uniqueActors),
+                    directors: Array(uniqueDirectors)
                 )
             }
             .eraseToAnyPublisher()
     }
+
 }

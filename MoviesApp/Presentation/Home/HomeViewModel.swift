@@ -10,7 +10,7 @@ import Combine
 
 enum ViewModelState {
     case loading
-    case loaded([Movie])
+    case loaded
     case error(Error)
 }
 

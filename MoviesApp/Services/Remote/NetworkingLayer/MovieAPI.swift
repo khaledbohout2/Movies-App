@@ -24,12 +24,12 @@ enum MovieAPI: APIEndpoint {
             return "/movie/popular"
         case .search:
             return "/search/movie"
-        case .getMovieDetails:
-            return "/movies/get-movie-details"
-        case .getSimilarMovies:
-            return "/movies/get-similar-movies"
-        case .getMovieCredits:
-            return "/movies/get-movie-credits"
+        case .getMovieDetails(let id):
+            return "/movie/\(id)"
+        case .getSimilarMovies(let id):
+            return "/movie/\(id)/similar"
+        case .getMovieCredits(let id):
+            return "/movie/\(id)/credits"
         }
     }
 
@@ -43,8 +43,8 @@ enum MovieAPI: APIEndpoint {
 
     var queryParameters: [URLQueryItem]? {
         switch self {
-        case .getMovieDetails(let id):
-            return [URLQueryItem(name: "movie_id", value: "\(id)")]
+        case .getMovieDetails:
+            return [URLQueryItem(name: "language", value: "en-US")]
         case .popular(let page):
             return [URLQueryItem(name: "language", value: "en-US"),
                     URLQueryItem(name: "page", value: "\(page)")]
@@ -55,10 +55,12 @@ enum MovieAPI: APIEndpoint {
                 URLQueryItem(name: "page", value: "\(page)"),
                 URLQueryItem(name: "include_adult", value: "false")
             ]
-        case .getSimilarMovies(let id):
-            return [URLQueryItem(name: "movie_id", value: "\(id)")]
-        case .getMovieCredits(let id):
-            return [URLQueryItem(name: "movie_id", value: "\(id)")]
+        case .getSimilarMovies:
+            return [URLQueryItem(name: "language", value: "en-US"),
+                    URLQueryItem(name: "page", value: "1"),
+                    URLQueryItem(name: "include_adult", value: "false")]
+        case .getMovieCredits:
+            return [URLQueryItem(name: "language", value: "en-US")]
         }
     }
 
