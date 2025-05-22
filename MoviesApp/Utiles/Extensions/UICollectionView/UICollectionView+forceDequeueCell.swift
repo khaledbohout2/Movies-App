@@ -1,9 +1,3 @@
-//
-//  UICollectionView+forceDequeueCell.swift
-//  MoviesApp
-//
-//  Created by Khaled-Circle on 23/05/2025.
-//
 
 import UIKit
 
