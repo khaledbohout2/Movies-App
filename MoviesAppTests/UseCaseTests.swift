@@ -158,7 +158,7 @@ final class UseCaseTests: XCTestCase {
             .withJob("Director")
             .build()
 
-        let credits = MovieCreditsResponseBuilder()
+        let credits = MovieCreditsBuilder()
             .withId(99)
             .withCast([castMember])
             .withCrew([crewMember])
