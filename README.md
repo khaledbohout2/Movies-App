@@ -102,7 +102,7 @@ The app has two main views:
 3.  **Setup API Keys:**
     This project requires TMDb API keys that are not included in the repository for security reasons.
 
-    * Create a new file named `Secrets.xcconfig` in the project root (or where your project expects it).
+    * Create a new file named `Secrets.xcconfig` in the project root.
 
     * Add the following content, replacing the placeholder values with your actual TMDb API keys:
 
