@@ -38,6 +38,7 @@ final class MovieDetailsViewModel {
     }
 
     private func getMovieDetails() {
+        state = .loading
         getmovieDetailsUseCase.execute(movieId: movieId)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {

@@ -57,13 +57,16 @@ final class HomeViewModel {
     }
 
     private func fetchPopularMovies() {
+        state = .loading
         getPopularMoviesUseCase.perform(page: page)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
+                switch completion {
+                case .failure(let error):
                     self?.state = .error(error)
+                case .finished:
+                    self?.state = .loaded
                 }
-                self?.isLoadingPage = false
             }, receiveValue: { [weak self] movies in
                 self?.movies.append(contentsOf: movies.results)
                 self?.page = movies.page + 1
@@ -76,10 +79,12 @@ final class HomeViewModel {
         getsearchMoviesUseCase.perform(query: query, page: page)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
+                switch completion {
+                case .failure(let error):
                     self?.state = .error(error)
+                case .finished:
+                    self?.state = .loaded
                 }
-                self?.isLoadingPage = false
             }, receiveValue: { [weak self] movies in
                 self?.movies.append(contentsOf: movies.results)
                 self?.page = movies.page + 1

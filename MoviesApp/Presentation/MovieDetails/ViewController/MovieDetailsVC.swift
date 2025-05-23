@@ -19,11 +19,30 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         super.viewDidLoad()
         self.title = "Movie Details"
         mainView.setDelegates(self)
+        bindViewModelState()
         bindViewModel()
         viewModel.didLoad()
         mainView.watchListButton.addTarget { [weak self] in
             self?.viewModel.didTapWatchlistButton()
         }
+    }
+    
+    private func bindViewModelState() {
+        viewModel.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self = self else { return }
+                switch state {
+                case .loading:
+                    self.startLoading()
+                case .loaded:
+                    self.stopLoading()
+                case .error(let error):
+                    self.stopLoading()
+                    self.showSelfDismissingAlert(error.localizedDescription)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func bindViewModel() {

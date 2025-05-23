@@ -18,11 +18,30 @@ class HomeVC: BaseVC<HomeView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindViewModelState()
         bindViewModel()
         viewModel.didLoad()
         self.title = "Home"
         mainView.tableView.register(MoviesTableViewCell.self, forCellReuseIdentifier: MoviesTableViewCell.identifier)
         mainView.setDelegates(self)
+    }
+
+    private func bindViewModelState() {
+        viewModel.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self = self else { return }
+                switch state {
+                case .loading:
+                    self.startLoading()
+                case .loaded:
+                    self.stopLoading()
+                case .error(let error):
+                    self.stopLoading()
+                    self.showSelfDismissingAlert(error.localizedDescription)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func bindViewModel() {
