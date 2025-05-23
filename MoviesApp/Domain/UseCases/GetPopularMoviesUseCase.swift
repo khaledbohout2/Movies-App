@@ -2,7 +2,7 @@
 import Combine
 
 protocol GetPopularMoviesUseCase {
-    func perform(page: Int) -> AnyPublisher<MovieResponse, Error>
+    func perform(page: Int) -> AnyPublisher<MovieResponse, APIError>
 }
 
 final class GetPopularMoviesUseCaseImp: GetPopularMoviesUseCase {
@@ -13,7 +13,7 @@ final class GetPopularMoviesUseCaseImp: GetPopularMoviesUseCase {
         self.moviesRepository = moviesRepository
     }
 
-    func perform(page: Int) -> AnyPublisher<MovieResponse, Error> {
+    func perform(page: Int) -> AnyPublisher<MovieResponse, APIError> {
         return moviesRepository.getPopularMovies(page: page)
     }
 }

@@ -2,7 +2,7 @@
 import Combine
 
 protocol GetMovieDetailsUseCase {
-    func execute(movieId: Int) -> AnyPublisher<Movie, Error>
+    func execute(movieId: Int) -> AnyPublisher<Movie, APIError>
 }
 
 class GetMovieDetailsUseCaseImp: GetMovieDetailsUseCase {
@@ -12,7 +12,7 @@ class GetMovieDetailsUseCaseImp: GetMovieDetailsUseCase {
         self.repository = repository
     }
 
-    func execute(movieId: Int) -> AnyPublisher<Movie, Error> {
+    func execute(movieId: Int) -> AnyPublisher<Movie, APIError> {
         repository.fetchMovieDetails(id: movieId)
     }
 }

@@ -10,7 +10,7 @@ class MoviesRepositoryImp: MoviesRepository {
         self.wishlistStorage = wishlistStorage
     }
 
-    func getPopularMovies(page: Int) -> AnyPublisher<MovieResponse, Error> {
+    func getPopularMovies(page: Int) -> AnyPublisher<MovieResponse, APIError> {
         return apiClient.request(MovieAPI.popular(page: page), responseType: MovieResponse.self)
             .map { [weak self] response -> MovieResponse in
                 guard let self = self else { return response }
@@ -24,7 +24,7 @@ class MoviesRepositoryImp: MoviesRepository {
             .eraseToAnyPublisher()
     }
 
-    func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, Error> {
+    func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, APIError> {
         return apiClient.request(MovieAPI.search(query: query, page: page), responseType: MovieResponse.self)
             .map { [weak self] response -> MovieResponse in
                 guard let self = self else { return response }
@@ -38,7 +38,7 @@ class MoviesRepositoryImp: MoviesRepository {
             .eraseToAnyPublisher()
     }
 
-    func fetchMovieDetails(id: Int) -> AnyPublisher<Movie, Error> {
+    func fetchMovieDetails(id: Int) -> AnyPublisher<Movie, APIError> {
         return apiClient.request(MovieAPI.getMovieDetails(id: id), responseType: Movie.self)
             .map { [weak self] movie -> Movie in
                 var newMovie = movie
@@ -48,13 +48,13 @@ class MoviesRepositoryImp: MoviesRepository {
             .eraseToAnyPublisher()
     }
 
-    func fetchSimilarMovies(id: Int) -> AnyPublisher<MovieResponse, Error> {
+    func fetchSimilarMovies(id: Int) -> AnyPublisher<MovieResponse, APIError> {
         return apiClient.request(MovieAPI.getSimilarMovies(id: id), responseType: MovieResponse.self)
             .map { $0 }
             .eraseToAnyPublisher()
     }
 
-    func fetchMovieCredits(id: Int) -> AnyPublisher<MovieCreditsResponse, Error> {
+    func fetchMovieCredits(id: Int) -> AnyPublisher<MovieCreditsResponse, APIError> {
         return apiClient.request(MovieAPI.getMovieCredits(id: id), responseType: MovieCreditsResponse.self)
             .map { $0 }
             .eraseToAnyPublisher()

@@ -2,7 +2,7 @@
 import Combine
 
 protocol GetCastsOfSimilarMoviesUseCase {
-    func execute(movieIds: [Int]) -> AnyPublisher<Cast, Error>
+    func execute(movieIds: [Int]) -> AnyPublisher<Cast, APIError>
 }
 
 class GetCastsOfSimilarMoviesUseCaseImp: GetCastsOfSimilarMoviesUseCase {
@@ -12,7 +12,7 @@ class GetCastsOfSimilarMoviesUseCaseImp: GetCastsOfSimilarMoviesUseCase {
         self.repository = repository
     }
 
-    func execute(movieIds: [Int]) -> AnyPublisher<Cast, Error> {
+    func execute(movieIds: [Int]) -> AnyPublisher<Cast, APIError> {
         let publishers = movieIds.map { repository.fetchMovieCredits(id: $0) }
 
         return Publishers.MergeMany(publishers)
