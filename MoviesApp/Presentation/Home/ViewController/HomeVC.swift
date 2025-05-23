@@ -18,7 +18,6 @@ class HomeVC: BaseVC<HomeView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindViewModelState()
         bindViewModel()
         viewModel.didLoad()
         self.title = "Home"
@@ -26,7 +25,7 @@ class HomeVC: BaseVC<HomeView> {
         mainView.setDelegates(self)
     }
 
-    private func bindViewModelState() {
+    private func bindViewModel() {
         viewModel.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
@@ -34,21 +33,13 @@ class HomeVC: BaseVC<HomeView> {
                 switch state {
                 case .loading:
                     self.startLoading()
-                case .loaded:
+                case .loaded(let movies):
                     self.stopLoading()
+                    self.mainView.tableView.reloadData()
                 case .error(let error):
                     self.stopLoading()
                     self.showSelfDismissingAlert(error.localizedDescription)
                 }
-            }
-            .store(in: &cancellables)
-    }
-
-    private func bindViewModel() {
-        viewModel.$movies
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.mainView.tableView.reloadData()
             }
             .store(in: &cancellables)
     }

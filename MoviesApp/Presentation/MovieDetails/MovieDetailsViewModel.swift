@@ -11,7 +11,7 @@ final class MovieDetailsViewModel {
     private let removeFromWishlistUseCase: RemoveFromWishlistUseCase
     private let movieId: Int
 
-    @Published private(set) var state: ViewModelState = .loading
+    @Published private(set) var state: ViewModelState<Movie> = .loading
     @Published var movieDetails: Movie?
     @Published var similarMovies: [Movie] = []
     @Published var castsOfSimilarMovies: Cast = Cast(actors: [], directors: [])
@@ -45,12 +45,12 @@ final class MovieDetailsViewModel {
                 case .failure(let error):
                     self?.state = .error(error)
                 case .finished:
-                    self?.state = .loaded
+                    break
                 }
             }, receiveValue: { [weak self] movieDetails in
                 guard let self else { return }
                 self.movieDetails = movieDetails
-                self.state = .loaded
+                self.state = .loaded(movieDetails)
             })
             .store(in: &cancellables)
     }
@@ -62,7 +62,7 @@ final class MovieDetailsViewModel {
                 case .failure(let error):
                     self?.state = .error(error)
                 case .finished:
-                    self?.state = .loaded
+                    break
                 }
             }, receiveValue: { [weak self] similarMovies in
                 guard let self else { return }
@@ -79,7 +79,7 @@ final class MovieDetailsViewModel {
                 case .failure(let error):
                     self?.state = .error(error)
                 case .finished:
-                    self?.state = .loaded
+                    break
                 }
             }, receiveValue: { [weak self] casts in
                 guard let self else { return }

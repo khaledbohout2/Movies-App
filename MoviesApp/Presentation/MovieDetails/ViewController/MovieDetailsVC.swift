@@ -19,15 +19,14 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         super.viewDidLoad()
         self.title = "Movie Details"
         mainView.setDelegates(self)
-        bindViewModelState()
         bindViewModel()
         viewModel.didLoad()
         mainView.watchListButton.addTarget { [weak self] in
             self?.viewModel.didTapWatchlistButton()
         }
     }
-    
-    private func bindViewModelState() {
+
+    private func bindViewModel() {
         viewModel.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
@@ -35,21 +34,13 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
                 switch state {
                 case .loading:
                     self.startLoading()
-                case .loaded:
+                case .loaded(let movieDetails):
                     self.stopLoading()
+                    self.populateMovieDetails(movie: movieDetails)
                 case .error(let error):
                     self.stopLoading()
                     self.showSelfDismissingAlert(error.localizedDescription)
                 }
-            }
-            .store(in: &cancellables)
-    }
-
-    private func bindViewModel() {
-        viewModel.$movieDetails
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] movie in
-                self?.populateMovieDetails()
             }
             .store(in: &cancellables)
 
@@ -69,15 +60,15 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
             .store(in: &cancellables)
     }
 
-    private func populateMovieDetails() {
-        mainView.posterImageView.load(from: viewModel.movieDetails?.posterPath ?? "")
-        mainView.titleLabel.text = viewModel.movieDetails?.title
-        mainView.taglineLabel.text = viewModel.movieDetails?.tagline
-        mainView.overviewLabel.text = viewModel.movieDetails?.overview
-        mainView.revenueLabel.text = viewModel.movieDetails?.revenue.map(\.description) ?? ""
-        mainView.releaseDateLabel.text = viewModel.movieDetails?.releaseDate.map(\.description) ?? ""
-        mainView.statusLabel.text = viewModel.movieDetails?.status
-        if viewModel.movieDetails?.isWishlisted ?? false {
+    private func populateMovieDetails(movie: Movie) {
+        mainView.posterImageView.load(from: movie.posterPath ?? "")
+        mainView.titleLabel.text = movie.title
+        mainView.taglineLabel.text = movie.tagline
+        mainView.overviewLabel.text = movie.overview
+        mainView.revenueLabel.text = movie.revenue.map(\.description) ?? ""
+        mainView.releaseDateLabel.text = movie.releaseDate.map(\.description) ?? ""
+        mainView.statusLabel.text = movie.status
+        if movie.isWishlisted {
             mainView.watchListButton.setTitle("Remove from Watchlist", for: .normal)
         }
     }

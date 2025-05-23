@@ -2,16 +2,16 @@
 import Foundation
 import Combine
 
-enum ViewModelState {
+enum ViewModelState<T> {
     case loading
-    case loaded
+    case loaded(T)
     case error(Error)
 }
 
 final class HomeViewModel {
 
     @Published private(set) var movies: [Movie] = []
-    @Published private(set) var state: ViewModelState = .loading
+    @Published private(set) var state: ViewModelState<[Movie]> = .loading
     @Published var searchText: String = ""
     @Published var page: Int = 1
     @Published var totalPages: Int = 0
@@ -65,12 +65,13 @@ final class HomeViewModel {
                 case .failure(let error):
                     self?.state = .error(error)
                 case .finished:
-                    self?.state = .loaded
+                    break
                 }
             }, receiveValue: { [weak self] movies in
                 self?.movies.append(contentsOf: movies.results)
                 self?.page = movies.page + 1
                 self?.totalPages = movies.totalPages
+                self?.state = .loaded(self?.movies ?? [])
             })
             .store(in: &cancellables)
     }
@@ -83,7 +84,7 @@ final class HomeViewModel {
                 case .failure(let error):
                     self?.state = .error(error)
                 case .finished:
-                    self?.state = .loaded
+                    break
                 }
             }, receiveValue: { [weak self] movies in
                 self?.movies.append(contentsOf: movies.results)
