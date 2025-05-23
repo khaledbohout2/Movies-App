@@ -88,15 +88,33 @@ The app has two main views:
 
 ## How to Run
 
-- Clone the repo
-- Open `TeldaMovieApp.xcodeproj`
-- Add your TMDb API key in the appropriate config file or Info.plist
-- Build and run on iOS Simulator or device
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd <repository-folder>
+    ```
 
----
+2.  **Open the project in Xcode:**
+    ```bash
+    open MovieApp.xcodeproj
+    ```
+
+3.  **Setup API Keys:**
+    This project requires TMDb API keys that are not included in the repository for security reasons.
+
+    * Create a new file named `Secrets.xcconfig` in the project root (or where your project expects it).
+
+    * Add the following content, replacing the placeholder values with your actual TMDb API keys:
+
+        ```
+        API_Read_Access_Token=your_actual_access_token_here
+        API_KEY=your_actual_api_key_here
+        ```
+
+    * You can obtain your own TMDb API key by registering here: [https://www.themoviedb.org](https://www.themoviedb.org)
+
+4.  **Build and run** the project on the iOS Simulator or a physical device.
 
 ## Contact
 
 If you have any questions or feedback, feel free to reach out.
-
----
