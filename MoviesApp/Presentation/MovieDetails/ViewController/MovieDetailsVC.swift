@@ -21,6 +21,9 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         mainView.setDelegates(self)
         bindViewModel()
         viewModel.didLoad()
+        mainView.watchListButton.addTarget { [weak self] in
+            self?.viewModel.didTapWatchlistButton()
+        }
     }
 
     private func bindViewModel() {
@@ -55,6 +58,9 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         mainView.revenueLabel.text = viewModel.movieDetails?.revenue.map(\.description) ?? ""
         mainView.releaseDateLabel.text = viewModel.movieDetails?.releaseDate.map(\.description) ?? ""
         mainView.statusLabel.text = viewModel.movieDetails?.status
+        if viewModel.movieDetails?.isWishlisted ?? false {
+            mainView.watchListButton.setTitle("Remove from Watchlist", for: .normal)
+        }
     }
 
 }

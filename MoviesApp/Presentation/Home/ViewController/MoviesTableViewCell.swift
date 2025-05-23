@@ -74,7 +74,7 @@ class MoviesTableViewCell: UITableViewCell {
         movieImageView.load(from: movie.posterPath ?? "")
         titleLabel.text = movie.title
         overviewLabel.text = movie.overview
-   //     watchlistImageView.image = movie.isInWatchlist ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark")
+        watchlistImageView.image = movie.isWishlisted ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark")
     }
 
 }

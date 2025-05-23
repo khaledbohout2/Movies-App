@@ -2,7 +2,8 @@
 class DependencyContainer {
     lazy var decoder: ResponseDecoder = JSONResponseDecoder()
     lazy var apiClient: APIClientProtocol = APIClient(decoder: decoder)
-    lazy var moviesRepository: MoviesRepository = MoviesRepositoryImp(apiClient: apiClient)
+    lazy var wishlistStorage: WishlistStorage = WishlistManager()
+    lazy var moviesRepository: MoviesRepository = MoviesRepositoryImp(apiClient: apiClient, wishlistStorage: wishlistStorage)
 
     lazy var getPopularMoviesUseCase: GetPopularMoviesUseCase =
         GetPopularMoviesUseCaseImp(moviesRepository: moviesRepository)
@@ -15,7 +16,13 @@ class DependencyContainer {
 
     lazy var getSimilarMoviesUseCase: GetSimilarMoviesUseCase =
     GetSimilarMoviesUseCaseImp(repository: moviesRepository)
-    
+
     lazy var getCastsOfSimilarMoviesUseCase: GetCastsOfSimilarMoviesUseCase =
     GetCastsOfSimilarMoviesUseCaseImp(repository: moviesRepository)
+
+    lazy var addMovieToWishlistUseCase: AddToWishlistUseCase =
+    AddToWishlistUseCaseImp(moviesRepository: moviesRepository)
+
+    lazy var removeFromWishlistUseCase: RemoveFromWishlistUseCase =
+    RemoveFromWishlistUseCaseImp(moviesRepository: moviesRepository)
 }

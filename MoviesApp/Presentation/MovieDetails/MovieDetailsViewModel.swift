@@ -7,6 +7,8 @@ final class MovieDetailsViewModel {
     private let getmovieDetailsUseCase: GetMovieDetailsUseCase
     private let getsimilarMoviesUseCase: GetSimilarMoviesUseCase
     private let getCastsOfSimilarMoviesUseCase: GetCastsOfSimilarMoviesUseCase
+    private let addToWishlistUseCase: AddToWishlistUseCase
+    private let removeFromWishlistUseCase: RemoveFromWishlistUseCase
     private let movieId: Int
 
     @Published private(set) var state: ViewModelState = .loading
@@ -18,20 +20,24 @@ final class MovieDetailsViewModel {
          coordinator: Coordinator,
          getmovieDetailsUseCase: GetMovieDetailsUseCase,
          getsimilarMoviesUseCase: GetSimilarMoviesUseCase,
-         getCastsOfSimilarMoviesUseCase: GetCastsOfSimilarMoviesUseCase) {
+         getCastsOfSimilarMoviesUseCase: GetCastsOfSimilarMoviesUseCase,
+         addToWishlistUseCase: AddToWishlistUseCase,
+         removeFromWishlistUseCase: RemoveFromWishlistUseCase) {
         self.movieId = movieId
         self.coordinator = coordinator
         self.getmovieDetailsUseCase = getmovieDetailsUseCase
         self.getsimilarMoviesUseCase = getsimilarMoviesUseCase
         self.getCastsOfSimilarMoviesUseCase = getCastsOfSimilarMoviesUseCase
+        self.addToWishlistUseCase = addToWishlistUseCase
+        self.removeFromWishlistUseCase = removeFromWishlistUseCase
     }
 
     func didLoad() {
-        getmovieDetails()
-        getsimilarMovies()
+        getMovieDetails()
+        getSimilarMovies()
     }
 
-    func getmovieDetails() {
+    private func getMovieDetails() {
         getmovieDetailsUseCase.execute(movieId: movieId)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -48,7 +54,7 @@ final class MovieDetailsViewModel {
             .store(in: &cancellables)
     }
 
-    func getsimilarMovies() {
+    private func getSimilarMovies() {
         getsimilarMoviesUseCase.execute(movieId: movieId)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -65,7 +71,7 @@ final class MovieDetailsViewModel {
             .store(in: &cancellables)
     }
 
-    func getCastsOfSimilarMovies() {
+    private func getCastsOfSimilarMovies() {
         getCastsOfSimilarMoviesUseCase.execute(movieIds: similarMovies.map(\.id))
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -77,9 +83,26 @@ final class MovieDetailsViewModel {
             }, receiveValue: { [weak self] casts in
                 guard let self else { return }
                 self.castsOfSimilarMovies = casts
-                print(castsOfSimilarMovies.directors)
             })
             .store(in: &cancellables)
+    }
+
+    private func addToWatchlist() {
+        addToWishlistUseCase.execute(movieID: movieId)
+    }
+
+    private func removeFromWatchlist() {
+        removeFromWishlistUseCase.execute(movieID: movieId)
+    }
+
+    func didTapWatchlistButton() {
+        if movieDetails?.isWishlisted ?? false {
+            removeFromWatchlist()
+            movieDetails?.isWishlisted = false
+        } else {
+            addToWatchlist()
+            movieDetails?.isWishlisted = true
+        }
     }
 
 }

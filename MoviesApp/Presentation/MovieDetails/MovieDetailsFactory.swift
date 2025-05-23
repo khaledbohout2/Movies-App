@@ -17,7 +17,9 @@ class DefaultMovieDetailsFactory: MovieDetailsFactory {
                                               coordinator: coordinator,
                                               getmovieDetailsUseCase: container.getMovieDetailsUseCase,
                                               getsimilarMoviesUseCase: container.getSimilarMoviesUseCase,
-                                              getCastsOfSimilarMoviesUseCase: container.getCastsOfSimilarMoviesUseCase)
+                                              getCastsOfSimilarMoviesUseCase: container.getCastsOfSimilarMoviesUseCase,
+                                              addToWishlistUseCase: container.addMovieToWishlistUseCase,
+                                              removeFromWishlistUseCase: container.removeFromWishlistUseCase)
         return MovieDetailsVC(viewModel: viewModel)
     }
 

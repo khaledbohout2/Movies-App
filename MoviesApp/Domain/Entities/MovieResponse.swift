@@ -34,6 +34,8 @@ struct Movie: Decodable {
         case releaseDate = "release_date"
         case status
     }
+    
+    var isWishlisted: Bool = false
 
     var releaseYear: String? {
         guard let date = releaseDate, !date.isEmpty else { return nil }

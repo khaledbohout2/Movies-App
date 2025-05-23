@@ -7,7 +7,7 @@ protocol APIClientProtocol {
 }
 
 final class APIClient: APIClientProtocol {
-    
+
     private let decoder: ResponseDecoder
 
     init(decoder: ResponseDecoder) {

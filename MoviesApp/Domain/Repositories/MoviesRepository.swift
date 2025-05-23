@@ -7,4 +7,6 @@ protocol MoviesRepository {
     func fetchMovieDetails(id: Int) -> AnyPublisher<Movie, Error>
     func fetchSimilarMovies(id: Int) -> AnyPublisher<MovieResponse, Error>
     func fetchMovieCredits(id: Int) -> AnyPublisher<MovieCreditsResponse, Error>
+    func addToWishlist(movieID: Int)
+    func removeFromWishlist(movieID: Int)
 }
