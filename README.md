@@ -88,18 +88,24 @@ The app has two main views:
 
 ## How to Run
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
     ```bash
     git clone <repository-url>
     cd <repository-folder>
     ```
 
-2.  **Open the project in Xcode:**
+2. **Install CocoaPods dependencies:**
+    Run this command inside the project folder:
     ```bash
-    open MovieApp.xcodeproj
+    pod install
     ```
 
-3.  **Setup API Keys:**
+3. **Open the workspace file:**
+    ```bash
+    open MovieApp.xcworkspace
+    ```
+
+4. **Setup API Keys:**
     This project requires TMDb API keys that are not included in the repository for security reasons.
 
     - Create a new file named `Secrets.xcconfig` in the project root.
@@ -113,28 +119,13 @@ The app has two main views:
 
     - You can obtain your own TMDb API key by registering here: [https://www.themoviedb.org](https://www.themoviedb.org)
 
-    - **Important:** After adding `Secrets.xcconfig`, you must set it in Xcode:
-      
-      - Open your project in Xcode
-      - Select your project in the Project Navigator
+    - **Important:** After adding `Secrets.xcconfig`, set it in Xcode:
+
+      - Select the project in the Project Navigator
       - Go to the **Project** target > **Info** tab
-      - Under **Configurations**, set the `Secrets.xcconfig` file for the Debug and Release configurations as appropriate
+      - Under **Configurations**, set the `Secrets.xcconfig` file for both Debug and Release configurations
 
-4.  **Install CocoaPods dependencies:**
-    If this project uses CocoaPods, run the following in the project directory:
-
-    ```bash
-    pod install
-    ```
-
-    Then, open the workspace file:
-
-    ```bash
-    open MovieApp.xcworkspace
-    ```
-
-5.  **Build and run** the project on the iOS Simulator or a physical device.
-
+5. **Build and run** the project on the iOS Simulator or a physical device.
 
 ## Contact
 
