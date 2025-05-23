@@ -1,113 +1,102 @@
-Telda Mobile Engineer Challenge — Movie App
-This repository contains my solution for the Telda Mobile Engineer Challenge — a simple movie app using The Movie Database (TMDb) API.
+# Telda’s Mobile Engineer Challenge
 
-Challenge Overview
-Create a movie app with two main views:
+## Overview
 
-Movie List View:
+This project is a simple movie app built using The Movie Database (TMDb) open API.
+The app has two main views:
 
-Shows popular movies when search is empty.
+- **Movies List View:**
+  - Search bar at the top to search movies by title
+  - Shows movies grouped by year with title, overview, image, and watchlist status
+  - When search bar is empty, shows popular movies (API A)
+  - When searching, shows search results (API B)
 
-Shows search results grouped by year with title, overview, image, and watchlist status.
+- **Movie Details View:**
+  Divided into 3 independently loaded sections:
+  1. Movie details (API C): title, overview, image, tagline, revenue, release date, status, add to watchlist button
+  2. List of up to 5 similar movies (API D)
+  3. Casts of the similar movies (API E), grouped by Actors and Directors, sorted by popularity, showing top 5 of each
 
-Search bar for movie title input.
+---
 
-Movie Detail View:
+## Architecture
 
-Displays movie details (title, overview, image, tagline, revenue, release date, status, and watchlist button).
+- Clean Architecture with **3 layers:**
+  - **Data:** API implementations and repository implementations
+  - **Domain:** Business entities, use cases, repository protocols
+  - **Presentation:** MVVM pattern with UIKit
 
-Shows up to 5 similar movies.
+- UIKit used **fully coded** — no Storyboards
+- Combine used for reactive bindings
+- Navigation handled by **AppCoordinator**
+- Factory pattern used to create ViewControllers
+- Dependency injection managed by **DependencyContainer** using lazy vars
+- Unit tests and builder patterns used for testing and code quality
 
-Displays top 5 actors and directors from the similar movies, grouped and sorted by popularity.
+---
 
-Use TMDb API endpoints for data.
+## Persistence
 
-Support iOS 14 to 18, all iPhone devices.
+- UserDefaults used for offline storage of simple movie IDs (watchlist)
+- Justification:
+  > Given that we’re only saving simple movie IDs, and there’s no need for querying or complex data relationships, UserDefaults is fast, lightweight, and ideal for this use case — even for several thousand entries.
+  >
+  > The logic is abstracted behind a `WishlistRepository` protocol so that switching to Core Data, Realm, or encrypted storage would have minimal impact on the rest of the codebase.
 
-UIKit mandatory; SwiftUI optional.
+---
 
-Auto Layout required.
+## Networking & Services
 
-Architecture & Design
-I applied Clean Architecture principles, separating the app into three main layers:
+- Repository pattern abstracts data fetching
+- Clean architecture separation of concerns:
+  - Remote services (API calls) and local services (cache, storage) are abstracted behind protocols
+  - Used Combine publishers to expose data streams to ViewModels
+- Error handling with meaningful errors propagated to the UI
 
-Layer    Responsibility    Technologies / Patterns Used
-Data    API implementations, data repositories, offline storage    APIClient, Repository pattern, UserDefaults for offline data
-Domain    Business entities, use cases, repository protocols    Plain Swift models, Use Cases for business logic, Protocol abstractions
-Presentation    UI, view models, data binding, navigation    UIKit (programmatic, no storyboard), MVVM, Combine, AppCoordinator
+---
 
-Key components:
-MVVM (Model-View-ViewModel) pattern in the Presentation layer to keep UI logic clean and testable.
+## Benefits of this Approach
 
-Combine framework for reactive data binding between ViewModels and Views.
+- **Clean separation of concerns** improves maintainability and testability
+- **MVVM + Combine** provides clear data flow and easy UI updates
+- **Coordinator pattern** centralizes navigation logic, decouples view controllers
+- **Factory & Dependency Injection** improves scalability and modularity
+- Abstracted persistence allows future-proofing data storage strategies
+- Fully coded UI ensures complete control over layout and behavior
+- Unit tests improve reliability and help prevent regressions
 
-AppCoordinator pattern for navigation flow management, promoting separation of concerns.
+---
 
-Factory pattern to instantiate ViewControllers cleanly and consistently.
+## Requirements
 
-Dependency Container using lazy properties to manage dependencies efficiently and support easy testing and mocking.
+- Supports iOS 14 through 18
+- Supports all iPhone devices compatible with those iOS versions
+- UIKit-based, with optional SwiftUI integration if needed
+- Auto Layout used for all screen sizes
 
-Repository abstraction for data fetching, enabling swapping between remote API and local data seamlessly.
+---
 
-Services abstraction:
+## APIs Used
 
-Local service (UserDefaults-based Watchlist storage).
+- Popular Movies: https://developers.themoviedb.org/3/movies/get-popular-movies
+- Search Movies: https://developers.themoviedb.org/3/search/search-movies
+- Movie Details: https://developers.themoviedb.org/3/movies/get-movie-details
+- Similar Movies: https://developers.themoviedb.org/3/movies/get-similar-movies
+- Movie Credits: https://developers.themoviedb.org/3/movies/get-movie-credits
 
-Remote service (TMDb API client).
+---
 
-Offline Storage / Watchlist Management
-Given the requirement to store only simple movie IDs for the user's watchlist, I chose to use UserDefaults:
+## How to Run
 
-"Since we only save simple movie IDs and have no need for complex queries or data relationships, UserDefaults is a lightweight and fast solution, ideal even for several thousand entries."
+- Clone the repo
+- Open `TeldaMovieApp.xcodeproj`
+- Add your TMDb API key in the appropriate config file or Info.plist
+- Build and run on iOS Simulator or device
 
-To maintain a clean architecture and future-proof the app:
+---
 
-Watchlist persistence is abstracted behind a WishlistRepository protocol.
+## Contact
 
-This abstraction allows swapping to other storage mechanisms in the future (e.g., Core Data, Realm, Keychain) without impacting the rest of the app.
+If you have any questions or feedback, feel free to reach out.
 
-This approach demonstrates foresight and scalability — hallmarks of senior-level development.
-
-Benefits of Chosen Technologies & Patterns
-Technology / Pattern    Benefits
-Clean Architecture    Clear separation of concerns, easier maintenance, testability, and scalability.
-MVVM + Combine    Reactive UI updates, clean data flow, and better unit testing capabilities.
-UIKit (programmatic)    Full control over UI, no storyboard merge conflicts, easier to review changes.
-AppCoordinator    Centralized navigation logic, easier to maintain complex flows.
-Factory Pattern    Simplifies view controller creation, improves code modularity.
-Dependency Injection Container    Manages dependencies effectively, promotes loose coupling and easier testing.
-Repository Pattern    Decouples data sources from business logic, easier to mock or extend.
-UserDefaults for Watchlist    Lightweight, fast, and perfectly suited for simple key-value data storage.
-
-How to Run
-Clone the repo.
-
-Open MovieApp.xcodeproj in Xcode.
-
-Add your TMDb API key in Info.plist under the key API_Read_Access_Token.
-
-Build and run on iOS 14+ simulator or device.
-
-Testing
-Unit tests cover ViewModels and Use Cases.
-
-Mock repositories and services injected via dependency container for isolated tests.
-
-Builders used for generating test data easily.
-
-Summary
-This project demonstrates:
-
-Practical application of Clean Architecture and MVVM with Combine.
-
-Strong understanding of UIKit best practices and programmatic UI development.
-
-Effective error handling, dependency management, and navigation coordination.
-
-Thoughtful offline data storage strategy with abstraction for scalability.
-
-Clear, maintainable, and testable code reflecting senior-level iOS development skills.
-
-Thank you for reviewing my solution!
-Feel free to reach out if you have any questions.
-
+---
