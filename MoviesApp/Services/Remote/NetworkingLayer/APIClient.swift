@@ -8,6 +8,12 @@ protocol APIClientProtocol {
 
 final class APIClient: APIClientProtocol {
     
+    private let decoder: ResponseDecoder
+
+    init(decoder: ResponseDecoder) {
+        self.decoder = decoder
+    }
+
     private var bearerToken: String? {
         Bundle.main.object(forInfoDictionaryKey: "API_Read_Access_Token") as? String
     }
@@ -16,7 +22,7 @@ final class APIClient: APIClientProtocol {
 
         var urlComponents = URLComponents(url: endpoint.baseURL.appendingPathComponent(endpoint.path), resolvingAgainstBaseURL: false)!
         urlComponents.queryItems = endpoint.queryParameters
-        
+
         guard let url = urlComponents.url else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
@@ -32,7 +38,7 @@ final class APIClient: APIClientProtocol {
         }
 
         return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { data, response -> Data in
+            .tryMap { data, response in
                 guard let httpResp = response as? HTTPURLResponse else {
                     throw URLError(.badServerResponse)
                 }
@@ -45,7 +51,9 @@ final class APIClient: APIClientProtocol {
                 }
                 return data
             }
-            .decode(type: T.self, decoder: JSONDecoder())
+            .tryMap { data in
+                try self.decoder.decode(data)
+            }
             .eraseToAnyPublisher()
     }
 }

@@ -1,6 +1,7 @@
 
 class DependencyContainer {
-    lazy var apiClient: APIClientProtocol = APIClient()
+    lazy var decoder: ResponseDecoder = JSONResponseDecoder()
+    lazy var apiClient: APIClientProtocol = APIClient(decoder: decoder)
     lazy var moviesRepository: MoviesRepository = MoviesRepositoryImp(apiClient: apiClient)
 
     lazy var getPopularMoviesUseCase: GetPopularMoviesUseCase =
