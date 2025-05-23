@@ -17,6 +17,7 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Movie Details"
         mainView.setDelegates(self)
         bindViewModel()
         viewModel.didLoad()
@@ -33,14 +34,15 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         viewModel.$similarMovies
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.mainView.castsOfSimilarMoviesCV.reloadData()
+                self?.mainView.similarMoviesCV.reloadData()
             }
             .store(in: &cancellables)
 
         viewModel.$castsOfSimilarMovies
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.mainView.castsOfSimilarMoviesCV.reloadData()
+                self?.mainView.actorsOfSimilarMoviesCV.reloadData()
+                self?.mainView.directorsOfSimilarMoviesCV.reloadData()
             }
             .store(in: &cancellables)
     }
@@ -54,4 +56,5 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         mainView.releaseDateLabel.text = viewModel.movieDetails?.releaseDate.map(\.description) ?? ""
         mainView.statusLabel.text = viewModel.movieDetails?.status
     }
+
 }

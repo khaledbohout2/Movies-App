@@ -33,20 +33,21 @@ class MovieCell: UICollectionViewCell {
         contentView.addSubview(posterImageView)
         contentView.addSubview(titleLabel)
 
-        posterImageView.anchor(.top(contentView.topAnchor),
-                               .leading(contentView.leadingAnchor),
-                               .trailing(contentView.trailingAnchor))
-        
+        posterImageView.anchor(.top(contentView.topAnchor, constant: 8),
+                               .leading(contentView.leadingAnchor, constant: 8),
+                               .trailing(contentView.trailingAnchor, constant: 8))
+
         titleLabel.anchor(.top(posterImageView.bottomAnchor, constant: 8),
                           .leading(contentView.leadingAnchor, constant: 4),
                           .trailing(contentView.trailingAnchor, constant: 4),
-                          .bottom(contentView.bottomAnchor, constant: 8),
-                          .height(24))
+                          .height(40),
+                          .bottom(contentView.bottomAnchor, constant: 8))
     }
 
     func configure(with movie: Movie) {
         titleLabel.text = movie.title
         posterImageView.load(from: movie.posterPath ?? "")
     }
+
 }
 

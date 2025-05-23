@@ -59,7 +59,7 @@ final class MovieDetailsViewModel {
                 }
             }, receiveValue: { [weak self] similarMovies in
                 guard let self else { return }
-                self.similarMovies = similarMovies.results
+                self.similarMovies = similarMovies
                 getCastsOfSimilarMovies()
             })
             .store(in: &cancellables)
@@ -77,6 +77,7 @@ final class MovieDetailsViewModel {
             }, receiveValue: { [weak self] casts in
                 guard let self else { return }
                 self.castsOfSimilarMovies = casts
+                print(castsOfSimilarMovies.directors)
             })
             .store(in: &cancellables)
     }

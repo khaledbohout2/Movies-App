@@ -119,7 +119,39 @@ class MoviewDetailsView: BaseView {
         return label
     }()
     
-    lazy var castsOfSimilarMoviesCV: UICollectionView = {
+    lazy var actorsOfSimilarMoviesLbl: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 16)
+        label.textColor = .label
+        label.textAlignment = .center
+        label.text = "Actors"
+        return label
+    }()
+    
+    lazy var actorsOfSimilarMoviesCV: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.allowsMultipleSelection = false
+        collectionView.register(CastCell.self,
+                                forCellWithReuseIdentifier: CastCell.identifier)
+        return collectionView
+    }()
+    
+    lazy var directorsOfSimilarMoviesLbl: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 16)
+        label.textColor = .label
+        label.textAlignment = .center
+        label.text = "Directors"
+        return label
+    }()
+
+    lazy var directorsOfSimilarMoviesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .horizontal
@@ -211,9 +243,8 @@ class MoviewDetailsView: BaseView {
         simialarMoviesView.addSubview(similarMoviesCV)
 
         similarMoviesLabel.anchor(
-            .top(simialarMoviesView.topAnchor, constant: 16),
-            .leading(simialarMoviesView.leadingAnchor, constant: 16),
-            .trailing(simialarMoviesView.trailingAnchor, constant: 16)
+            .top(simialarMoviesView.topAnchor),
+            .leading(simialarMoviesView.leadingAnchor, constant: 16)
         )
 
         similarMoviesCV.anchor(
@@ -221,7 +252,7 @@ class MoviewDetailsView: BaseView {
             .leading(simialarMoviesView.leadingAnchor, constant: 0),
             .trailing(simialarMoviesView.trailingAnchor, constant: 0),
             .bottom(simialarMoviesView.bottomAnchor, constant: 16),
-            .height(200)
+            .height(250)
         )
     }
     
@@ -229,28 +260,51 @@ class MoviewDetailsView: BaseView {
         stackView.addArrangedSubview(castsOfSimilarMoviesView)
 
         castsOfSimilarMoviesView.addSubview(castsOfSimilarMoviesLbl)
-        castsOfSimilarMoviesView.addSubview(castsOfSimilarMoviesCV)
+        castsOfSimilarMoviesView.addSubview(actorsOfSimilarMoviesLbl)
+        castsOfSimilarMoviesView.addSubview(actorsOfSimilarMoviesCV)
+        castsOfSimilarMoviesView.addSubview(directorsOfSimilarMoviesLbl)
+        castsOfSimilarMoviesView.addSubview(directorsOfSimilarMoviesCV)
 
         castsOfSimilarMoviesLbl.anchor(
-            .top(castsOfSimilarMoviesView.topAnchor, constant: 16),
-            .leading(castsOfSimilarMoviesView.leadingAnchor, constant: 16),
-            .trailing(castsOfSimilarMoviesView.trailingAnchor, constant: 16)
+            .top(castsOfSimilarMoviesView.topAnchor),
+            .leading(castsOfSimilarMoviesView.leadingAnchor, constant: 16)
+        )
+        
+        actorsOfSimilarMoviesLbl.anchor(
+            .top(castsOfSimilarMoviesLbl.bottomAnchor, constant: 4),
+                                        .leading(leadingAnchor, constant: 16)
         )
 
-        castsOfSimilarMoviesCV.anchor(
-            .top(castsOfSimilarMoviesLbl.bottomAnchor, constant: 12),
+        actorsOfSimilarMoviesCV.anchor(
+            .top(actorsOfSimilarMoviesLbl.bottomAnchor, constant: 12),
+            .leading(castsOfSimilarMoviesView.leadingAnchor),
+            .trailing(castsOfSimilarMoviesView.trailingAnchor),
+            .height(136)
+        )
+
+        directorsOfSimilarMoviesLbl.anchor(
+            .top(actorsOfSimilarMoviesCV.bottomAnchor, constant: 8),
+            .leading(leadingAnchor, constant: 16)
+        )
+
+        directorsOfSimilarMoviesCV.anchor(
+            .top(directorsOfSimilarMoviesLbl.bottomAnchor, constant: 12),
             .leading(castsOfSimilarMoviesView.leadingAnchor),
             .trailing(castsOfSimilarMoviesView.trailingAnchor),
             .bottom(castsOfSimilarMoviesView.bottomAnchor, constant: 16),
-            .height(200)
+            .height(136)
         )
     }
 
     func setDelegates(_ delegate: AnyObject) {
         similarMoviesCV.delegate = delegate as? UICollectionViewDelegate
-        castsOfSimilarMoviesCV.delegate = delegate as? UICollectionViewDelegate
         similarMoviesCV.dataSource = delegate as? UICollectionViewDataSource
-        castsOfSimilarMoviesCV.dataSource = delegate as? UICollectionViewDataSource
+
+        actorsOfSimilarMoviesCV.delegate = delegate as? UICollectionViewDelegate
+        actorsOfSimilarMoviesCV.dataSource = delegate as? UICollectionViewDataSource
+        
+        directorsOfSimilarMoviesCV.delegate = delegate as? UICollectionViewDelegate
+        directorsOfSimilarMoviesCV.dataSource = delegate as? UICollectionViewDataSource
     }
 
 }

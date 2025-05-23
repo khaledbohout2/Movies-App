@@ -2,7 +2,7 @@
 import Combine
 
 protocol GetSimilarMoviesUseCase {
-    func execute(movieId: Int) -> AnyPublisher<MovieResponse, Error>
+    func execute(movieId: Int) -> AnyPublisher<[Movie], Error>
 }
 
 class GetSimilarMoviesUseCaseImp: GetSimilarMoviesUseCase {
@@ -12,7 +12,12 @@ class GetSimilarMoviesUseCaseImp: GetSimilarMoviesUseCase {
         self.repository = repository
     }
 
-    func execute(movieId: Int) -> AnyPublisher<MovieResponse, Error> {
+    func execute(movieId: Int) -> AnyPublisher<[Movie], Error> {
         repository.fetchSimilarMovies(id: movieId)
+            .map { response in
+                Array(response.results.prefix(5))
+            }
+            .eraseToAnyPublisher()
     }
+
 }
