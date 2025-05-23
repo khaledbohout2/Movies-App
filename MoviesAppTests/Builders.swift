@@ -82,8 +82,8 @@ struct MovieResponseBuilder {
         return copy
     }
 
-    func build() -> MovieResponse {
-        MovieResponse(results: results, page: page, totalPages: totalPages)
+    func build() -> Movies {
+        Movies(results: results, page: page, totalPages: totalPages)
     }
 }
 
@@ -166,30 +166,30 @@ struct CrewMemberBuilder {
     }
 }
 
-struct MovieCreditsResponseBuilder {
+struct MovieCreditsBuilder {
     private var id: Int = 0
     private var cast: [CastMember] = []
     private var crew: [CrewMember] = []
 
-    func withId(_ id: Int) -> MovieCreditsResponseBuilder {
+    func withId(_ id: Int) -> MovieCreditsBuilder {
         var copy = self
         copy.id = id
         return copy
     }
 
-    func withCast(_ cast: [CastMember]) -> MovieCreditsResponseBuilder {
+    func withCast(_ cast: [CastMember]) -> MovieCreditsBuilder {
         var copy = self
         copy.cast = cast
         return copy
     }
 
-    func withCrew(_ crew: [CrewMember]) -> MovieCreditsResponseBuilder {
+    func withCrew(_ crew: [CrewMember]) -> MovieCreditsBuilder {
         var copy = self
         copy.crew = crew
         return copy
     }
 
-    func build() -> MovieCreditsResponse {
-        MovieCreditsResponse(id: id, cast: cast, crew: crew)
+    func build() -> MovieCredits {
+        MovieCredits(id: id, cast: cast, crew: crew)
     }
 }

@@ -41,7 +41,7 @@ final class HomeViewModel {
     }
 
     func didLoad() {
-        fetchPopularMovies()
+        getPopularMovies()
         $searchText
             .removeDuplicates()
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
@@ -51,7 +51,7 @@ final class HomeViewModel {
                 self.totalPages = 0
                 self.movies = []
                 if query.isEmpty {
-                    self.fetchPopularMovies()
+                    self.getPopularMovies()
                 } else {
                     self.searchMovies(query: query)
                 }
@@ -59,7 +59,7 @@ final class HomeViewModel {
             .store(in: &cancellables)
     }
 
-    private func fetchPopularMovies() {
+    private func getPopularMovies() {
         state = .loading
         getPopularMoviesUseCase.perform(page: page)
             .receive(on: DispatchQueue.main)
@@ -107,7 +107,7 @@ final class HomeViewModel {
         isLoadingPage = true
 
         if searchText.isEmpty {
-            fetchPopularMovies()
+            getPopularMovies()
         } else {
             searchMovies(query: searchText)
         }

@@ -13,7 +13,7 @@ class GetCastsOfSimilarMoviesUseCaseImp: GetCastsOfSimilarMoviesUseCase {
     }
 
     func execute(movieIds: [Int]) -> AnyPublisher<Cast, APIError> {
-        let publishers = movieIds.map { repository.fetchMovieCredits(id: $0) }
+        let publishers = movieIds.map { repository.getMovieCredits(id: $0) }
 
         return Publishers.MergeMany(publishers)
             .collect()

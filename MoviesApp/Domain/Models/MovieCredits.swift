@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct MovieCreditsResponse: Codable {
+struct MovieCredits: Codable {
     let id: Int
     let cast: [CastMember]
     let crew: [CrewMember]

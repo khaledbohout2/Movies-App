@@ -13,6 +13,6 @@ class GetMovieDetailsUseCaseImp: GetMovieDetailsUseCase {
     }
 
     func execute(movieId: Int) -> AnyPublisher<Movie, APIError> {
-        repository.fetchMovieDetails(id: movieId)
+        repository.getMovieDetails(id: movieId)
     }
 }

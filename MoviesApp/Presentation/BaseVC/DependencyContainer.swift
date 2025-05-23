@@ -1,5 +1,5 @@
 
-class DependencyContainer {
+final class DependencyContainer {
     lazy var decoder: ResponseDecoder = JSONResponseDecoder()
     lazy var apiClient: APIClientProtocol = APIClient(decoder: decoder)
     lazy var wishlistStorage: WishlistStorage = WishlistManager()

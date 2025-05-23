@@ -4,32 +4,35 @@ import Foundation
 @testable import MoviesApp
 
 final class MockMoviesRepository: MoviesRepository {
-    var popularMoviesResult: Result<MovieResponse, Error>?
-    var searchMoviesResult: Result<MovieResponse, Error>?
-    var movieDetailsResult: Result<Movie, Error>?
-    var similarMoviesResult: Result<MovieResponse, Error>?
-    var movieCreditsResult: Result<MovieCreditsResponse, Error>?
+
+    var popularMoviesResult: Result<Movies, APIError>?
+    var searchMoviesResult: Result<Movies, APIError>?
+    var movieDetailsResult: Result<Movie, APIError>?
+    var similarMoviesResult: Result<Movies, APIError>?
+    var movieCreditsResult: Result<MovieCredits, APIError>?
 
     var addedMovieID: Int?
     var removedMovieID: Int?
+    
+    private var wishlistedMovieIDs: Set<Int> = []
 
-    func getPopularMovies(page: Int) -> AnyPublisher<MovieResponse, Error> {
+    func getPopularMovies(page: Int) -> AnyPublisher<Movies, APIError> {
         return publisher(for: popularMoviesResult)
     }
 
-    func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, Error> {
+    func searchMovies(query: String, page: Int) -> AnyPublisher<Movies, APIError> {
         return publisher(for: searchMoviesResult)
     }
 
-    func fetchMovieDetails(id: Int) -> AnyPublisher<Movie, Error> {
+    func getMovieDetails(id: Int) -> AnyPublisher<Movie, APIError> {
         return publisher(for: movieDetailsResult)
     }
 
-    func fetchSimilarMovies(id: Int) -> AnyPublisher<MovieResponse, Error> {
+    func getSimilarMovies(id: Int) -> AnyPublisher<Movies, APIError> {
         return publisher(for: similarMoviesResult)
     }
 
-    func fetchMovieCredits(id: Int) -> AnyPublisher<MovieCreditsResponse, Error> {
+    func getMovieCredits(id: Int) -> AnyPublisher<MovieCredits, APIError> {
         return publisher(for: movieCreditsResult)
     }
 
@@ -40,13 +43,22 @@ final class MockMoviesRepository: MoviesRepository {
     func removeFromWishlist(movieID: Int) {
         removedMovieID = movieID
     }
+    
+    func wishListContains(movieID: Int) -> Bool {
+        return wishlistedMovieIDs.contains(movieID)
+    }
 
-    private func publisher<T>(for result: Result<T, Error>?) -> AnyPublisher<T, Error> {
+    private func publisher<T>(for result: Result<T, APIError>?) -> AnyPublisher<T, APIError> {
         guard let result = result else {
-            return Fail(error: NSError(domain: "MockMoviesRepository", code: -1, userInfo: [NSLocalizedDescriptionKey: "No result set in mock"]))
-                .eraseToAnyPublisher()
+            return Fail(error: APIError.unknown(NSError(
+                domain: "MockMoviesRepository",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "No result set in mock"]
+            )))
+            .eraseToAnyPublisher()
         }
         return result.publisher.eraseToAnyPublisher()
     }
+
 }
 

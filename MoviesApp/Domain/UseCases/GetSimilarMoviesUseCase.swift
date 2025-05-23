@@ -13,7 +13,7 @@ class GetSimilarMoviesUseCaseImp: GetSimilarMoviesUseCase {
     }
 
     func execute(movieId: Int) -> AnyPublisher<[Movie], APIError> {
-        repository.fetchSimilarMovies(id: movieId)
+        repository.getSimilarMovies(id: movieId)
             .map { response in
                 Array(response.results.prefix(5))
             }

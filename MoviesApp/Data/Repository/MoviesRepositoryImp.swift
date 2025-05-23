@@ -1,7 +1,7 @@
 
 import Combine
 
-class MoviesRepositoryImp: MoviesRepository {
+final class MoviesRepositoryImp: MoviesRepository {
     private var apiClient: APIClientProtocol
     private var wishlistStorage: WishlistStorage
 
@@ -10,35 +10,35 @@ class MoviesRepositoryImp: MoviesRepository {
         self.wishlistStorage = wishlistStorage
     }
 
-    func getPopularMovies(page: Int) -> AnyPublisher<MovieResponse, APIError> {
-        return apiClient.request(MovieAPI.popular(page: page), responseType: MovieResponse.self)
-            .map { [weak self] response -> MovieResponse in
+    func getPopularMovies(page: Int) -> AnyPublisher<Movies, APIError> {
+        return apiClient.request(MovieAPI.popular(page: page), responseType: Movies.self)
+            .map { [weak self] response -> Movies in
                 guard let self = self else { return response }
                 let updatedMovies = response.results.map { movie -> Movie in
                     var newMovie = movie
                     newMovie.isWishlisted = self.wishlistStorage.contains(movieID: newMovie.id)
                     return newMovie
                 }
-                return MovieResponse(results: updatedMovies, page: response.page, totalPages: response.totalPages)
+                return Movies(results: updatedMovies, page: response.page, totalPages: response.totalPages)
             }
             .eraseToAnyPublisher()
     }
 
-    func searchMovies(query: String, page: Int) -> AnyPublisher<MovieResponse, APIError> {
-        return apiClient.request(MovieAPI.search(query: query, page: page), responseType: MovieResponse.self)
-            .map { [weak self] response -> MovieResponse in
+    func searchMovies(query: String, page: Int) -> AnyPublisher<Movies, APIError> {
+        return apiClient.request(MovieAPI.search(query: query, page: page), responseType: Movies.self)
+            .map { [weak self] response -> Movies in
                 guard let self = self else { return response }
                 let updatedMovies = response.results.map { movie -> Movie in
                     var newMovie = movie
                     newMovie.isWishlisted = self.wishlistStorage.contains(movieID: newMovie.id)
                     return newMovie
                 }
-                return MovieResponse(results: updatedMovies, page: response.page, totalPages: response.totalPages)
+                return Movies(results: updatedMovies, page: response.page, totalPages: response.totalPages)
             }
             .eraseToAnyPublisher()
     }
 
-    func fetchMovieDetails(id: Int) -> AnyPublisher<Movie, APIError> {
+    func getMovieDetails(id: Int) -> AnyPublisher<Movie, APIError> {
         return apiClient.request(MovieAPI.getMovieDetails(id: id), responseType: Movie.self)
             .map { [weak self] movie -> Movie in
                 var newMovie = movie
@@ -48,14 +48,14 @@ class MoviesRepositoryImp: MoviesRepository {
             .eraseToAnyPublisher()
     }
 
-    func fetchSimilarMovies(id: Int) -> AnyPublisher<MovieResponse, APIError> {
-        return apiClient.request(MovieAPI.getSimilarMovies(id: id), responseType: MovieResponse.self)
+    func getSimilarMovies(id: Int) -> AnyPublisher<Movies, APIError> {
+        return apiClient.request(MovieAPI.getSimilarMovies(id: id), responseType: Movies.self)
             .map { $0 }
             .eraseToAnyPublisher()
     }
 
-    func fetchMovieCredits(id: Int) -> AnyPublisher<MovieCreditsResponse, APIError> {
-        return apiClient.request(MovieAPI.getMovieCredits(id: id), responseType: MovieCreditsResponse.self)
+    func getMovieCredits(id: Int) -> AnyPublisher<MovieCredits, APIError> {
+        return apiClient.request(MovieAPI.getMovieCredits(id: id), responseType: MovieCredits.self)
             .map { $0 }
             .eraseToAnyPublisher()
     }
