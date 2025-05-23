@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a simple movie app built using The Movie Database (TMDb) open API.
+This project is a simple movie app built using The Movie Database (TMDb) open API.  
 The app has two main views:
 
 - **Movies List View:**
@@ -26,63 +26,63 @@ The app has two main views:
   - **Domain:** Business entities, use cases, repository protocols
   - **Presentation:** MVVM pattern with UIKit
 
-- UIKit used **fully coded** — no Storyboards
-- Combine used for reactive bindings
-- Navigation handled by **AppCoordinator**
-- Factory pattern used to create ViewControllers
-- Dependency injection managed by **DependencyContainer** using lazy vars
-- Unit tests and builder patterns used for testing and code quality
+- UIKit used **fully coded** — no Storyboards  
+- Combine used for reactive bindings  
+- Navigation handled by **AppCoordinator**  
+- Factory pattern used to create ViewControllers  
+- Dependency injection managed by **DependencyContainer** using lazy vars  
+- Unit tests and builder patterns used for testing and code quality  
 
 ---
 
 ## Persistence
 
-- UserDefaults used for offline storage of simple movie IDs (watchlist)
-- Justification:
-  > Given that we’re only saving simple movie IDs, and there’s no need for querying or complex data relationships, UserDefaults is fast, lightweight, and ideal for this use case — even for several thousand entries.
-  >
+- UserDefaults used for offline storage of simple movie IDs (watchlist)  
+- Justification:  
+  > Given that we’re only saving simple movie IDs, and there’s no need for querying or complex data relationships, UserDefaults is fast, lightweight, and ideal for this use case — even for several thousand entries.  
+  >  
   > The logic is abstracted behind a `WishlistRepository` protocol so that switching to Core Data, Realm, or encrypted storage would have minimal impact on the rest of the codebase.
 
 ---
 
 ## Networking & Services
 
-- Repository pattern abstracts data fetching
-- Clean architecture separation of concerns:
-  - Remote services (API calls) and local services (cache, storage) are abstracted behind protocols
-  - Used Combine publishers to expose data streams to ViewModels
-- Error handling with meaningful errors propagated to the UI
+- Repository pattern abstracts data fetching  
+- Clean architecture separation of concerns:  
+  - Remote services (API calls) and local services (cache, storage) are abstracted behind protocols  
+  - Used Combine publishers to expose data streams to ViewModels  
+- Error handling with meaningful errors propagated to the UI  
 
 ---
 
 ## Benefits of this Approach
 
-- **Clean separation of concerns** improves maintainability and testability
-- **MVVM + Combine** provides clear data flow and easy UI updates
-- **Coordinator pattern** centralizes navigation logic, decouples view controllers
-- **Factory & Dependency Injection** improves scalability and modularity
-- Abstracted persistence allows future-proofing data storage strategies
-- Fully coded UI ensures complete control over layout and behavior
-- Unit tests improve reliability and help prevent regressions
+- **Clean separation of concerns** improves maintainability and testability  
+- **MVVM + Combine** provides clear data flow and easy UI updates  
+- **Coordinator pattern** centralizes navigation logic, decouples view controllers  
+- **Factory & Dependency Injection** improves scalability and modularity  
+- Abstracted persistence allows future-proofing data storage strategies  
+- Fully coded UI ensures complete control over layout and behavior  
+- Unit tests improve reliability and help prevent regressions  
 
 ---
 
 ## Requirements
 
-- Supports iOS 14 through 18
-- Supports all iPhone devices compatible with those iOS versions
-- UIKit-based, with optional SwiftUI integration if needed
-- Auto Layout used for all screen sizes
+- Supports iOS 14 through 18  
+- Supports all iPhone devices compatible with those iOS versions  
+- UIKit-based, with optional SwiftUI integration if needed  
+- Auto Layout used for all screen sizes  
 
 ---
 
 ## APIs Used
 
-- Popular Movies: https://developers.themoviedb.org/3/movies/get-popular-movies
-- Search Movies: https://developers.themoviedb.org/3/search/search-movies
-- Movie Details: https://developers.themoviedb.org/3/movies/get-movie-details
-- Similar Movies: https://developers.themoviedb.org/3/movies/get-similar-movies
-- Movie Credits: https://developers.themoviedb.org/3/movies/get-movie-credits
+- Popular Movies: https://developers.themoviedb.org/3/movies/get-popular-movies  
+- Search Movies: https://developers.themoviedb.org/3/search/search-movies  
+- Movie Details: https://developers.themoviedb.org/3/movies/get-movie-details  
+- Similar Movies: https://developers.themoviedb.org/3/movies/get-similar-movies  
+- Movie Credits: https://developers.themoviedb.org/3/movies/get-movie-credits  
 
 ---
 
@@ -105,7 +105,7 @@ The app has two main views:
     open MovieApp.xcworkspace
     ```
 
-4. **Setup API Keys:**
+4. **Setup API Keys:**  
     This project requires TMDb API keys that are not included in the repository for security reasons.
 
     - Create a new file named `Secrets.xcconfig` in the project root.
@@ -121,11 +121,21 @@ The app has two main views:
 
     - **Important:** After adding `Secrets.xcconfig`, set it in Xcode:
 
-      - Select the project in the Project Navigator
-      - Go to the **Project** target > **Info** tab
-      - Under **Configurations**, set the `Secrets.xcconfig` file for both Debug and Release configurations
+      - Select the project in the Project Navigator  
+      - Go to the **Project** target > **Info** tab  
+      - Under **Configurations**, set the `Secrets.xcconfig` file for both Debug and Release configurations  
 
 5. **Build and run** the project on the iOS Simulator or a physical device.
+
+---
+
+## Next Steps
+
+- Integrate an **offline-first approach** by adding a Core Data database to cache movie data and watchlist status.
+- Remove the current use of UserDefaults for watchlist storage in favor of Core Data for improved data consistency and query capability.
+- Implement syncing logic between Core Data local cache and remote TMDb API to handle offline scenarios gracefully.
+
+---
 
 ## Contact
 
