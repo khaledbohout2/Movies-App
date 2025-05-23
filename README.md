@@ -41,7 +41,7 @@ The app has two main views:
 - Justification:  
   > Given that we’re only saving simple movie IDs, and there’s no need for querying or complex data relationships, UserDefaults is fast, lightweight, and ideal for this use case — even for several thousand entries.  
   >  
-  > The logic is abstracted behind a `WishlistRepository` protocol so that switching to Core Data, Realm, or encrypted storage would have minimal impact on the rest of the codebase.  
+  > The logic is abstracted behind a `WishlistStorage` protocol so that switching to Core Data, Realm, or encrypted storage would have minimal impact on the rest of the codebase.  
   >  
   > If the offline-first approach is applied in the future, we will switch to using Core Data for more robust data persistence and querying capabilities.
 
