@@ -67,5 +67,9 @@ class MoviesRepositoryImp: MoviesRepository {
     func removeFromWishlist(movieID: Int) {
         wishlistStorage.remove(movieID: movieID)
     }
+    
+    func wishListContains(movieID: Int) -> Bool {
+        return wishlistStorage.contains(movieID: movieID)
+    }
 
 }

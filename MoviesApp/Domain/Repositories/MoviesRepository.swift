@@ -9,4 +9,5 @@ protocol MoviesRepository {
     func fetchMovieCredits(id: Int) -> AnyPublisher<MovieCreditsResponse, APIError>
     func addToWishlist(movieID: Int)
     func removeFromWishlist(movieID: Int)
+    func wishListContains(movieID: Int) -> Bool
 }

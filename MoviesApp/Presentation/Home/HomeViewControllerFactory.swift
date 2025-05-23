@@ -16,7 +16,8 @@ class DefaultHomeViewControllerFactory: HomeViewControllerFactory {
         let viewModel = HomeViewModel(
             coordinator: coordinator,
             getPopularMoviesUseCase: container.getPopularMoviesUseCase,
-            getsearchMoviesUseCase: container.searchMoviesUseCase
+            getsearchMoviesUseCase: container.searchMoviesUseCase,
+            getMovieWishlistStatusUseCase: container.getMovieWishlistStatusUseCase
         )
         return HomeVC(viewModel: viewModel)
     }

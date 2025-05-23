@@ -25,6 +25,11 @@ class HomeVC: BaseVC<HomeView> {
         mainView.setDelegates(self)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.refreshWishlistStatus()
+    }
+
     private func bindViewModel() {
         viewModel.$state
             .receive(on: DispatchQueue.main)
@@ -33,7 +38,7 @@ class HomeVC: BaseVC<HomeView> {
                 switch state {
                 case .loading:
                     self.startLoading()
-                case .loaded(let movies):
+                case .loaded(_):
                     self.stopLoading()
                     self.mainView.tableView.reloadData()
                 case .error(let error):

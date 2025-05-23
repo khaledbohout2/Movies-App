@@ -25,4 +25,6 @@ class DependencyContainer {
 
     lazy var removeFromWishlistUseCase: RemoveFromWishlistUseCase =
     RemoveFromWishlistUseCaseImp(moviesRepository: moviesRepository)
+    
+    lazy var getMovieWishlistStatusUseCase: GetMovieWishlistStatusUseCase = GetMovieWishlistStatusUseCaseImp(moviesRepository: moviesRepository)
 }

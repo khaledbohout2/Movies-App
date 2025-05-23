@@ -27,14 +27,17 @@ final class HomeViewModel {
     private let coordinator: Coordinator
     private let getPopularMoviesUseCase: GetPopularMoviesUseCase
     private let getsearchMoviesUseCase: SearchMoviesUseCase
+    private let getMovieWishlistStatusUseCase: GetMovieWishlistStatusUseCase
     private var cancellables = Set<AnyCancellable>()
 
     init(coordinator: Coordinator,
          getPopularMoviesUseCase: GetPopularMoviesUseCase,
-         getsearchMoviesUseCase: SearchMoviesUseCase) {
+         getsearchMoviesUseCase: SearchMoviesUseCase,
+         getMovieWishlistStatusUseCase: GetMovieWishlistStatusUseCase) {
         self.coordinator = coordinator
         self.getPopularMoviesUseCase = getPopularMoviesUseCase
         self.getsearchMoviesUseCase = getsearchMoviesUseCase
+        self.getMovieWishlistStatusUseCase = getMovieWishlistStatusUseCase
     }
 
     func didLoad() {
@@ -113,6 +116,16 @@ final class HomeViewModel {
     func didSelectMovie(at indexPath: IndexPath) {
         let movie = moviesByYear[indexPath.section].movies[indexPath.row]
         coordinator.showMovieDetails(movieId: movie.id)
+    }
+
+    func refreshWishlistStatus() {
+        let updated = movies.map { movie -> Movie in
+            var updatedMovie = movie
+            updatedMovie.isWishlisted = getMovieWishlistStatusUseCase.execute(movieID: movie.id)
+            return updatedMovie
+        }
+        self.movies = updated
+        state = .loaded(updated)
     }
 
 }
