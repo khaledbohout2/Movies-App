@@ -102,18 +102,39 @@ The app has two main views:
 3.  **Setup API Keys:**
     This project requires TMDb API keys that are not included in the repository for security reasons.
 
-    * Create a new file named `Secrets.xcconfig` in the project root.
+    - Create a new file named `Secrets.xcconfig` in the project root.
 
-    * Add the following content, replacing the placeholder values with your actual TMDb API keys:
+    - Add the following content, replacing the placeholder values with your actual TMDb API keys:
 
         ```
         API_Read_Access_Token=your_actual_access_token_here
         API_KEY=your_actual_api_key_here
         ```
 
-    * You can obtain your own TMDb API key by registering here: [https://www.themoviedb.org](https://www.themoviedb.org)
+    - You can obtain your own TMDb API key by registering here: [https://www.themoviedb.org](https://www.themoviedb.org)
 
-4.  **Build and run** the project on the iOS Simulator or a physical device.
+    - **Important:** After adding `Secrets.xcconfig`, you must set it in Xcode:
+      
+      - Open your project in Xcode
+      - Select your project in the Project Navigator
+      - Go to the **Project** target > **Info** tab
+      - Under **Configurations**, set the `Secrets.xcconfig` file for the Debug and Release configurations as appropriate
+
+4.  **Install CocoaPods dependencies:**
+    If this project uses CocoaPods, run the following in the project directory:
+
+    ```bash
+    pod install
+    ```
+
+    Then, open the workspace file:
+
+    ```bash
+    open MovieApp.xcworkspace
+    ```
+
+5.  **Build and run** the project on the iOS Simulator or a physical device.
+
 
 ## Contact
 
