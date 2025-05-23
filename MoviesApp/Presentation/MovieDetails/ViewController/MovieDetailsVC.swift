@@ -58,6 +58,17 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
                 self?.mainView.directorsOfSimilarMoviesCV.reloadData()
             }
             .store(in: &cancellables)
+
+        viewModel.$movieDetails
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                if self?.viewModel.movieDetails?.isWishlisted ?? false {
+                    self?.mainView.watchListButton.setTitle("Remove from Watchlist", for: .normal)
+                } else {
+                    self?.mainView.watchListButton.setTitle("Add To Watchlist", for: .normal)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func populateMovieDetails(movie: Movie) {
@@ -68,9 +79,6 @@ class MovieDetailsVC: BaseVC<MoviewDetailsView> {
         mainView.revenueLabel.text = movie.revenue.map(\.description) ?? ""
         mainView.releaseDateLabel.text = movie.releaseDate.map(\.description) ?? ""
         mainView.statusLabel.text = movie.status
-        if movie.isWishlisted {
-            mainView.watchListButton.setTitle("Remove from Watchlist", for: .normal)
-        }
     }
 
 }
