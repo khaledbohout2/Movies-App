@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A345AF193A8B57771745D5BF /* Pods_MoviesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A265D4A0F8F4D56E8CDCFA /* Pods_MoviesApp.framework */; };
+		A61C3B042DE028DD0005B768 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A61C3B032DE028D80005B768 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +25,7 @@
 		2DBC3B65C45C8C7C3B92EAC3 /* Pods-MoviesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesApp.release.xcconfig"; path = "Target Support Files/Pods-MoviesApp/Pods-MoviesApp.release.xcconfig"; sourceTree = "<group>"; };
 		43A265D4A0F8F4D56E8CDCFA /* Pods_MoviesApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A61C3AE82DE01D2B0005B768 /* MoviesAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A61C3B032DE028D80005B768 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A6C9AAD92DDE2B460066C4F2 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		A6E8D8412DDA32B00014565A /* MoviesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E423D7D618D67CCC52536992 /* Pods-MoviesApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoviesApp.debug.xcconfig"; path = "Target Support Files/Pods-MoviesApp/Pods-MoviesApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		A6E8D8382DDA32B00014565A = {
 			isa = PBXGroup;
 			children = (
+				A61C3B032DE028D80005B768 /* README.md */,
 				A6C9AAD92DDE2B460066C4F2 /* Secrets.xcconfig */,
 				A6E8D8432DDA32B00014565A /* MoviesApp */,
 				A61C3AE92DE01D2B0005B768 /* MoviesAppTests */,
@@ -211,6 +214,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A61C3B042DE028DD0005B768 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
