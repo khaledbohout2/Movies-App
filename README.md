@@ -1,4 +1,4 @@
-# Telda’s Mobile Engineer Challenge
+# MoviesList app Challenge
 
 ## Overview
 
